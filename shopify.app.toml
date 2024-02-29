@@ -2,7 +2,7 @@
 
 client_id = "51260014b5ffaebc869616148716b527"
 name = "giftlist-reminder"
-application_url = "https://failures-productive-creates-ferry.trycloudflare.com"
+application_url = "https://street-gave-naval-rebates.trycloudflare.com"
 embedded = true
 
 [build]
@@ -16,9 +16,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://failures-productive-creates-ferry.trycloudflare.com/auth/callback",
-  "https://failures-productive-creates-ferry.trycloudflare.com/auth/shopify/callback",
-  "https://failures-productive-creates-ferry.trycloudflare.com/api/auth/callback"
+  "https://street-gave-naval-rebates.trycloudflare.com/auth/callback",
+  "https://street-gave-naval-rebates.trycloudflare.com/auth/shopify/callback",
+  "https://street-gave-naval-rebates.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

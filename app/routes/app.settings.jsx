@@ -13,13 +13,14 @@ import {
   Button,
 } from "@shopify/polaris";
 import { useState } from "react";
+import db from "../db.server";
 
 export async function loader() {
   // data from db
-  let settings = {
-    name: "csws app",
-    description: "the description",
-  };
+  let settings = await db.settings.findFirst();
+
+  // settings = settings || { id: "", name: "", description: "" };
+
   return json(settings);
 }
 
@@ -28,6 +29,23 @@ export async function action({ request }) {
   let settings = await request.formData();
 
   const settingsObject = Object.fromEntries(settings);
+
+  //update db
+  await db.settings.upsert({
+    where: {
+      id: "1",
+    },
+    update: {
+      id: "1",
+      name: settingsObject.name,
+      description: settingsObject.description,
+    },
+    create: {
+      id: "1",
+      name: settingsObject.name,
+      description: settingsObject.description,
+    },
+  });
 
   return json(settingsObject);
 }
@@ -71,7 +89,7 @@ export default function SettingsPage() {
                 <TextField
                   label="App name"
                   name="name"
-                  value={formState.name}
+                  value={formState?.name}
                   onChange={(value) =>
                     setFormState({ ...formState, name: value })
                   }
@@ -79,7 +97,7 @@ export default function SettingsPage() {
                 <TextField
                   label="Description"
                   name="description"
-                  value={formState.description}
+                  value={formState?.description}
                   onChange={(value) =>
                     setFormState({ ...formState, description: value })
                   }
