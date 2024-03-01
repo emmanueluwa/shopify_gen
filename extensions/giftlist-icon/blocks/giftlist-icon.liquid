@@ -1,5 +1,5 @@
 <div class="giftlist-inspire__icon" x-data="giftlist" >
-<button type="button" @click="addToGiftlist()">
+<button type="button" @click.debounce="addToGiftlist()">
 {% comment %} <svg></svg> {% endcomment %}
 <div :class="{'giftlist-inspire__icon--emo': giftlisted}">Gifting</div>
 {% if block.settings.text != blank %}
@@ -12,9 +12,21 @@
 <script>
 document.addEventListener('alpine:init', () => {
   Alpine.data('giftlist', () => ({
-    giftlisted: false, 
-    //usually added to .env
-    appUrl: "https://bosnia-symphony-tr-contracting.trycloudflare.com",
+  giftlisted: false, 
+  //usually added to .env
+  appUrl: "https://bosnia-symphony-tr-contracting.trycloudflare.com",
+
+  //IN PRODUCTION THIS REQUEST SHOULD BE CACHED
+    init(){
+      fetch(this.appUrl + "/api/giftlist"+"?customerId={{customer.id}}&productId={{product.id}}&shop={{shop.permanent_domain}}")
+      .then(response => response.json())
+      .then(result => {
+        if(result.data.length > 0){
+          this.giftlisted = true
+        }
+      })
+      .catch(error => console.log("error", error))
+    },
 
     addToGiftlist() {
       //TODO: send data to db 
@@ -30,7 +42,14 @@ document.addEventListener('alpine:init', () => {
       formData.append("customerId", "{{ customer.id  }}");
       formData.append("productId", "{{ product.id  }}");
       formData.append("shop", "{{ shop.permanent_domain  }}");
+      formData.append("_action", "CREATE")
 
+      //check if product already in wishlist
+      if(this.giftlisted){
+        this.wishlisted = false;
+        //update formdata _action to DELETE
+        formData.set("_action", "DELETE")
+      }
 
 
       var requestOptions = {
