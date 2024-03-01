@@ -1,0 +1,87 @@
+<div class="giftlist-inspire__icon" x-data="giftlist" >
+<button type="button" @click="addToGiftlist()">
+{% comment %} <svg></svg> {% endcomment %}
+<div :class="{'giftlist-inspire__icon--emo': giftlisted}">Gifting</div>
+{% if block.settings.text != blank %}
+<span class="giftlist-inspire__icon--text">{{block.settings.text}}</span>
+{% endif %}
+</button></div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+<script>
+document.addEventListener('alpine:init', () => {
+  Alpine.data('giftlist', () => ({
+    giftlisted: false, 
+    //usually added to .env
+    appUrl: "https://bosnia-symphony-tr-contracting.trycloudflare.com",
+
+    addToGiftlist() {
+      //TODO: send data to db 
+      // if customer is not logged in, show alert to login
+      {% unless customer %} 
+        alert("Please login to add to giftlist!")
+        return;
+      {% endunless %}
+
+
+
+      const formData = new FormData();
+      formData.append("customerId", "{{ customer.id  }}");
+      formData.append("productId", "{{ product.id  }}");
+      formData.append("shop", "{{ shop.permanent_domain  }}");
+
+
+
+      var requestOptions = {
+        method: "POST",
+        body: formData,
+        redirect: "follow"
+      }
+
+      fetch(this.appUrl + "/api/giftlist", requestOptions)
+      .then(response => response.text())
+      .then(result => { 
+        this.giftlisted = !this.giftlisted;
+      })
+      .catch(error => console.log("error", error))
+    }
+  }))
+})</script>
+
+<style>
+.giftlist-inspire__icon{
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+.giftlist-inspire__icon button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.giftlist-inspire__icon--emo {
+  background: #B8B8B8;
+  padding: 1rem;
+}
+</style>
+
+{% schema %}
+{
+  "name": "Giftlist Icon",
+  "target": "section",
+  "settings": [
+    { "type": "product", "id": "product", "label": "product", "autofill": true },
+    { "type": "text", "id": "text", "label": "Text", "default": "Add to giftlist" },
+
+    { "type": "color", "id": "colour", "label": "Star Colour", "default": "#ff0000" }
+  ]
+}
+{% endschema %}
+
