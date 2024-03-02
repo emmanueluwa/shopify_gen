@@ -2,7 +2,7 @@
 
 client_id = "51260014b5ffaebc869616148716b527"
 name = "giftlist-reminder"
-application_url = "https://bosnia-symphony-tr-contracting.trycloudflare.com"
+application_url = "https://confused-interesting-document-finals.trycloudflare.com"
 embedded = true
 
 [build]
@@ -16,9 +16,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://bosnia-symphony-tr-contracting.trycloudflare.com/auth/callback",
-  "https://bosnia-symphony-tr-contracting.trycloudflare.com/auth/shopify/callback",
-  "https://bosnia-symphony-tr-contracting.trycloudflare.com/api/auth/callback"
+  "https://confused-interesting-document-finals.trycloudflare.com/auth/callback",
+  "https://confused-interesting-document-finals.trycloudflare.com/auth/shopify/callback",
+  "https://confused-interesting-document-finals.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
